@@ -68,7 +68,10 @@ class Landing extends React.Component {
         person
       }
     }).then(({ data }) => {
-      console.log(data)
+      window.localStorage.setItem(
+        'REGISTERED_AS',
+        JSON.stringify(this.state.person)
+      )
       window.localStorage.setItem(
         'EVENT_MANAGED',
         JSON.stringify(data.create.id)

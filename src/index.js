@@ -1,6 +1,9 @@
 const { GraphQLServer, PubSub } = require('graphql-yoga')
 const mongoose = require('mongoose')
 const find = require('lodash.find')
+const path = require('path')
+const express = require('express')
+
 mongoose.connect(process.env.MONGOPATH || '')
 
 // MODELS
@@ -180,6 +183,9 @@ const resolvers = {
 
 const pubsub = new PubSub()
 const server = new GraphQLServer({ typeDefs, resolvers, context: { pubsub } })
+const staticFiles = express.static(path.join(__dirname, '../client/build'))
+
+server.express.use(staticFiles)
 
 server.start(
   {

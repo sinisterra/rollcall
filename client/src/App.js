@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import './App.css'
-import { ApolloProvider, Subscription } from 'react-apollo'
+import { ApolloProvider } from 'react-apollo'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { Landing, Manage, Attend } from './routes'
 
-import gql from 'graphql-tag'
 import client from './apollo.client'
 
 class App extends Component {

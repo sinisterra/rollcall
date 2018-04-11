@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
+    "heroku-postinstall": "cd client && yarn && yarn build",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
@@ -19,9 +20,11 @@
     "nodemon": "^1.17.3"
   },
   "dependencies": {
+    "express": "^4.16.3",
     "graphql-yoga": "^1.8.4",
     "lodash.find": "^4.6.0",
     "mongoose": "^5.0.14",
+    "path": "^0.12.7",
     "simpleid": "^1.0.0"
   }
 }

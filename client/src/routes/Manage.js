@@ -130,9 +130,11 @@ class Manage extends React.Component {
             )
           } else
             return (
-              <Button variant="raised" onClick={this.reset}>
-                Reiniciar
-              </Button>
+              <div>
+                <Typography variant="display1">
+                  No creaste éste evento, así que no lo puedes gestionar.
+                </Typography>
+              </div>
             )
         }}
       </Query>
