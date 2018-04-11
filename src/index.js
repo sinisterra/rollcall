@@ -62,8 +62,6 @@ const typeDefs = `
   input RollcallInput {
     name: String!
     description: String!
-    timeOpens: String!
-    timeCloses: String!
   }
 
   type Mutation {
