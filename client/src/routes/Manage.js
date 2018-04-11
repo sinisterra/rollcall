@@ -61,6 +61,11 @@ class Manage extends React.Component {
       <Query query={QUERY_FIND_ROLLCALL} variables={{ id }}>
         {({ data: mydata, loading }) => {
           if (!loading && mydata && this.canManage()) {
+            console.log(
+              `${window.location.protocol}://${
+                window.location.host
+              }/event/${id}/attend`
+            )
             return (
               <div style={{ padding: 24 }}>
                 <Grid spacing={24} container>
