@@ -72,7 +72,7 @@ class Manage extends React.Component {
                   <Grid item xs={12} md={6}>
                     <div>
                       <QRCode
-                        value={`${window.location.protocol}//${
+                        value={`${window.location.protocol}://${
                           window.location.host
                         }/event/${id}/attend`}
                         size={512}
