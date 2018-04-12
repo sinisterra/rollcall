@@ -4,6 +4,7 @@ import { Query, Subscription } from 'react-apollo'
 import Grid from 'material-ui/Grid'
 import Typography from 'material-ui/Typography'
 import Button from 'material-ui/Button'
+import { CircularProgress } from 'material-ui/Progress'
 
 import moment from 'moment'
 import List, { ListItem, ListItemAvatar, ListItemText } from 'material-ui/List'
@@ -26,6 +27,7 @@ const LIVE_ROLLCALL = gql`
       events {
         id
         person {
+          id
           name
           description
         }
@@ -61,22 +63,23 @@ class Manage extends React.Component {
       <Query query={QUERY_FIND_ROLLCALL} variables={{ id }}>
         {({ data: mydata, loading }) => {
           if (!loading && mydata && this.canManage()) {
-            console.log(
-              `${window.location.protocol}://${
-                window.location.host
-              }/event/${id}/attend`
-            )
+            console.log(window.location.protocol)
             return (
               <div style={{ padding: 24 }}>
                 <Grid spacing={24} container>
                   <Grid item xs={12} md={6}>
                     <div>
                       <QRCode
-                        value={`${window.location.protocol}://${
+                        value={`${window.location.protocol}//${
                           window.location.host
                         }/event/${id}/attend`}
                         size={512}
                       />
+                      <pre>
+                        {`${window.location.protocol}//${
+                          window.location.host
+                        }/event/${id}/attend`}
+                      </pre>
                     </div>
                     <div>
                       <Button variant="raised" onClick={this.reset}>
@@ -119,7 +122,7 @@ class Manage extends React.Component {
                                       }`}
                                       secondary={`Registro de asistencia: ${moment(
                                         timestamp
-                                      ).fromNow()}`}
+                                      ).format('LLL')}`}
                                     />
                                   </ListItem>
                                 )
@@ -133,7 +136,8 @@ class Manage extends React.Component {
                 </Grid>
               </div>
             )
-          } else
+          } else {
+            if (loading) return <CircularProgress />
             return (
               <div>
                 <Typography variant="display1">
@@ -141,6 +145,7 @@ class Manage extends React.Component {
                 </Typography>
               </div>
             )
+          }
         }}
       </Query>
     )

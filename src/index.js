@@ -183,7 +183,7 @@ const resolvers = {
 
 const pubsub = new PubSub()
 const server = new GraphQLServer({ typeDefs, resolvers, context: { pubsub } })
-const staticFiles = express.static(path.join(__dirname, '../client/build'))
+const staticFiles = express.static('../client/build')
 
 server.express.use(staticFiles)
 

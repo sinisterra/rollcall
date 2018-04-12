@@ -11,9 +11,11 @@ const httpLink = new HttpLink({
   uri: '/graphql'
 })
 
+const clientIsSecure = window.location.protocol === 'https:'
+
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
-  uri: `wss://${window.location.host}/graphql`,
+  uri: `${clientIsSecure ? 'wss' : 'ws'}://${window.location.host}/graphql`,
   options: {
     reconnect: true
   }
