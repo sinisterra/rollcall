@@ -11,6 +11,7 @@ import List, { ListItem, ListItemAvatar, ListItemText } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import get from 'lodash.get'
 import QRCode from 'qrcode.react'
+import csvexport from '../csvexport'
 
 const QUERY_FIND_ROLLCALL = gql`
   query findRollcall($id: ID!) {
@@ -24,6 +25,7 @@ const LIVE_ROLLCALL = gql`
     view(id: $id) {
       id
       personCount
+      timestamp
       events {
         id
         person {
@@ -97,51 +99,71 @@ class Manage extends React.Component {
                           return (
                             <div>Cargando lista de asistencia en vivo...</div>
                           )
-                        return (
-                          <div>
-                            <Typography variant="display2">
-                              Lista de asistencia{' '}
-                              {`(${get(data, 'view.personCount', 0)})`}
-                            </Typography>
-                            <Typography variant="body1">
-                              Puedes actualizar la página para refrescar la
-                              lista de asistencia
-                            </Typography>
-                            <List>
-                              {get(data, 'view.events', []) === [] ? (
-                                <Typography variant="display2">
-                                  Aún no hay asistentes registrados
-                                </Typography>
-                              ) : null}
-                              {get(data, 'view.events', []).map(
-                                ({ person, timestamp }, i) => {
-                                  const ts = moment(timestamp)
-                                  return (
-                                    <ListItem key={i}>
-                                      <ListItemAvatar>
-                                        <Avatar>{i + 1}</Avatar>
-                                      </ListItemAvatar>
-                                      <ListItemText
-                                        primary={` ${person.name} ${
-                                          person.description
-                                            ? `(${person.description})`
-                                            : ''
-                                        }`}
-                                        secondary={
-                                          <span>
-                                            {`${ts.format(
-                                              'LLL'
-                                            )} (${ts.fromNow()})`}
-                                          </span>
-                                        }
-                                      />
-                                    </ListItem>
-                                  )
-                                }
-                              )}
-                            </List>
-                          </div>
-                        )
+                        else {
+                          const stringified = csvexport(
+                            get(data, 'view.events', [])
+                          )
+                          return (
+                            <div>
+                              <Typography variant="display2">
+                                Lista de asistencia{' '}
+                                {`(${get(data, 'view.personCount', 0)})`}
+                              </Typography>
+                              <Typography variant="body1">
+                                Puedes actualizar la página para refrescar la
+                                lista de asistencia
+                              </Typography>
+                              <div
+                                style={{
+                                  padding: 16
+                                }}>
+                                <Button
+                                  download={`attendance_${moment(
+                                    get(data, 'view.timestamp', '')
+                                  ).format()}.csv`}
+                                  component="a"
+                                  href={stringified}
+                                  color="primary"
+                                  variant="raised">
+                                  Descargar archivo
+                                </Button>
+                              </div>
+                              <List>
+                                {get(data, 'view.events', []) === [] ? (
+                                  <Typography variant="display2">
+                                    Aún no hay asistentes registrados
+                                  </Typography>
+                                ) : null}
+                                {get(data, 'view.events', []).map(
+                                  ({ person, timestamp }, i) => {
+                                    const ts = moment(timestamp)
+                                    return (
+                                      <ListItem key={i}>
+                                        <ListItemAvatar>
+                                          <Avatar>{i + 1}</Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                          primary={` ${person.name} ${
+                                            person.description
+                                              ? `(${person.description})`
+                                              : ''
+                                          }`}
+                                          secondary={
+                                            <span>
+                                              {`${ts.format(
+                                                'LLL'
+                                              )} (${ts.fromNow()})`}
+                                            </span>
+                                          }
+                                        />
+                                      </ListItem>
+                                    )
+                                  }
+                                )}
+                              </List>
+                            </div>
+                          )
+                        }
                       }}
                     </Query>
                   </Grid>
