@@ -20,8 +20,8 @@ const QUERY_FIND_ROLLCALL = gql`
   }
 `
 const LIVE_ROLLCALL = gql`
-  subscription rollcall($id: ID!) {
-    live(id: $id) {
+  query rollcall($id: ID!) {
+    view(id: $id) {
       id
       personCount
       events {
@@ -88,9 +88,10 @@ class Manage extends React.Component {
                     </div>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Subscription
-                      subscription={LIVE_ROLLCALL}
-                      variables={{ id }}>
+                    <Query
+                      query={LIVE_ROLLCALL}
+                      variables={{ id }}
+                      pollInterval={2000}>
                       {({ data, loading: loading2 }) => {
                         if (loading2)
                           return (
@@ -100,38 +101,49 @@ class Manage extends React.Component {
                           <div>
                             <Typography variant="display2">
                               Lista de asistencia{' '}
-                              {`(${get(data, 'live.personCount', 0)})`}
+                              {`(${get(data, 'view.personCount', 0)})`}
+                            </Typography>
+                            <Typography variant="body1">
+                              Puedes actualizar la página para refrescar la
+                              lista de asistencia
                             </Typography>
                             <List>
-                              {get(data, 'live.events', []) === [] ? (
+                              {get(data, 'view.events', []) === [] ? (
                                 <Typography variant="display2">
                                   Aún no hay asistentes registrados
                                 </Typography>
                               ) : null}
-                              {get(data, 'live.events', []).map(
-                                ({ person, timestamp }, i) => (
-                                  <ListItem key={person.id}>
-                                    <ListItemAvatar>
-                                      <Avatar>{i + 1}</Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                      primary={`${person.name} ${
-                                        person.description
-                                          ? `(${person.description})`
-                                          : ''
-                                      }`}
-                                      secondary={`Registro de asistencia: ${moment(
-                                        timestamp
-                                      ).format('LLL')}`}
-                                    />
-                                  </ListItem>
-                                )
+                              {get(data, 'view.events', []).map(
+                                ({ person, timestamp }, i) => {
+                                  const ts = moment(timestamp)
+                                  return (
+                                    <ListItem key={i}>
+                                      <ListItemAvatar>
+                                        <Avatar>{i + 1}</Avatar>
+                                      </ListItemAvatar>
+                                      <ListItemText
+                                        primary={` ${person.name} ${
+                                          person.description
+                                            ? `(${person.description})`
+                                            : ''
+                                        }`}
+                                        secondary={
+                                          <span>
+                                            {`${ts.format(
+                                              'LLL'
+                                            )} (${ts.fromNow()})`}
+                                          </span>
+                                        }
+                                      />
+                                    </ListItem>
+                                  )
+                                }
                               )}
                             </List>
                           </div>
                         )
                       }}
-                    </Subscription>
+                    </Query>
                   </Grid>
                 </Grid>
               </div>

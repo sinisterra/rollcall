@@ -156,10 +156,7 @@ class Attend extends React.Component {
             )}
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Query
-              query={LIVE_ROLLCALL}
-              variables={{ id }}
-              fetchPolicy="network-only">
+            <Query query={LIVE_ROLLCALL} variables={{ id }} pollInterval={2000}>
               {({ data, loading: loading2 }) => {
                 if (loading2)
                   return <div>Cargando lista de asistencia en vivo...</div>
