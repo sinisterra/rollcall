@@ -3,8 +3,12 @@ import './App.css'
 import { ApolloProvider } from 'react-apollo'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { Landing, Manage, Attend } from './routes'
+import 'moment/locale/es'
+import moment from 'moment'
 
 import client from './apollo.client'
+
+moment.lang('es')
 
 class App extends Component {
   render() {

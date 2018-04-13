@@ -122,7 +122,9 @@ class Attend extends React.Component {
                     if (loading) return <div>Cargando...</div>
 
                     return (
-                      <form onSubmit={this.submitDetails(answer)}>
+                      <form
+                        onSubmit={this.submitDetails(answer)}
+                        style={{ display: 'flex', flexDirection: 'column' }}>
                         <Typography variant="headline">
                           Datos de la persona
                         </Typography>
@@ -130,6 +132,7 @@ class Attend extends React.Component {
                           value={this.state.person.name}
                           name="name"
                           label="Nombre Completo"
+                          margin="normal"
                           onChange={this.updatePerson}
                           required
                         />
@@ -137,11 +140,23 @@ class Attend extends React.Component {
                           value={this.state.person.description}
                           label="Cargo"
                           name="description"
+                          margin="normal"
                           onChange={this.updatePerson}
                         />
-                        <Button variant="raised" color="primary" type="submit">
-                          Registrar asistencia
-                        </Button>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end',
+                            padding: 24
+                          }}>
+                          <Button
+                            variant="raised"
+                            color="primary"
+                            type="submit">
+                            Registrar asistencia
+                          </Button>
+                        </div>
                       </form>
                     )
                   }}
@@ -149,7 +164,7 @@ class Attend extends React.Component {
               </div>
             ) : (
               <div>
-                <Typography variant="display1">
+                <Typography variant="headline">
                   Éxito! Tu asistencia ha sido registrada
                 </Typography>
               </div>

@@ -24,11 +24,11 @@ const flexCenterCenter = {
 class Landing extends React.Component {
   state = {
     details: {
-      name: 'Evento',
-      description: 'Descripción del Evento'
+      name: '',
+      description: ''
     },
     person: {
-      name: 'Santiago Sinisterra',
+      name: '',
       description: ''
     }
   }
@@ -87,25 +87,32 @@ class Landing extends React.Component {
           return (
             <div style={{ ...flexCenterCenter, height: '100vh' }}>
               <div style={{ ...flexCenterCenter, flexDirection: 'column' }}>
-                <Typography variant="display4">Toma de Asistencia</Typography>
+                <div style={{ padding: 24 }}>
+                  <Typography variant="display3">Toma de Asistencia</Typography>
+                </div>
                 <div>
-                  <form onSubmit={this.submitDetails(create, data)}>
-                    <div>
-                      <Typography variant="headline">
-                        Datos del evento
-                      </Typography>
-                      <TextField
-                        value={this.state.details.name}
-                        name="name"
-                        label="Nombre del Evento"
-                        onChange={this.updateDetails}
-                        required
-                      />
-                      <TextField
-                        value={this.state.details.description}
-                        name="description"
-                        onChange={this.updateDetails}
-                      />
+                  <form
+                    onSubmit={this.submitDetails(create, data)}
+                    style={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography variant="headline">Datos del evento</Typography>
+                    <TextField
+                      value={this.state.details.name}
+                      name="name"
+                      margin="normal"
+                      fullWidth
+                      label="Nombre del Evento"
+                      onChange={this.updateDetails}
+                      required
+                    />
+                    <TextField
+                      value={this.state.details.description}
+                      name="description"
+                      margin="normal"
+                      fullWidth
+                      label="Descripción del Evento"
+                      onChange={this.updateDetails}
+                    />
+                    <div style={{ padding: '24px 0px' }}>
                       <Divider />
                     </div>
                     <div>
@@ -118,26 +125,37 @@ class Landing extends React.Component {
                         label="Nombre Completo"
                         onChange={this.updatePerson}
                         required
+                        margin="normal"
+                        fullWidth
                       />
                       <TextField
                         value={this.state.person.description}
                         label="Cargo"
                         name="description"
+                        margin="normal"
+                        fullWidth
                         onChange={this.updatePerson}
                       />
                     </div>
-
-                    {!loading ? (
-                      <Button
-                        variant="raised"
-                        type="submit"
-                        color="primary"
-                        disabled={loading}>
-                        Comenzar
-                      </Button>
-                    ) : (
-                      <CircularProgress />
-                    )}
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        padding: 24
+                      }}>
+                      {!loading ? (
+                        <Button
+                          variant="raised"
+                          type="submit"
+                          color="primary"
+                          disabled={loading}>
+                          Comenzar
+                        </Button>
+                      ) : (
+                        <CircularProgress />
+                      )}
+                    </div>
                   </form>
                 </div>
               </div>

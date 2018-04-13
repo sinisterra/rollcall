@@ -1,6 +1,6 @@
 import React from 'react'
 import gql from 'graphql-tag'
-import { Query, Subscription } from 'react-apollo'
+import { Query } from 'react-apollo'
 import Grid from 'material-ui/Grid'
 import Typography from 'material-ui/Typography'
 import Button from 'material-ui/Button'
